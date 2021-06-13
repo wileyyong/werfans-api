@@ -126,7 +126,7 @@
         "lint": "eslint \"**/*.{js,ts}\" --color",
         "migrate": "cross-env TS_NODE_TRANSPILE_ONLY=1 node runner.js migrate-db",
         "migrate-test": "cross-env NODE_ENV=test yarn migrate",
-        "start": "node runner.js server",
+        "start": "cross-env NODE_ENV=develop node runner.js server",
         "start:develop": "cross-env NODE_ENV=develop yarn start",
         "start:local": "cross-env NODE_ENV=local nodemon runner.js server --watch app",
         "start:master": "cross-env NODE_ENV=master yarn start",
