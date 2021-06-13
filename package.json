@@ -109,7 +109,7 @@
     "name": "werfans-api",
     "private": true,
     "scripts": {
-        "start:local": "cross-env NODE_ENV=develop node runner.js server --watch app"
+        "start:develop": "cross-env NODE_ENV=develop node runner.js server"
     },
     "version": "2.1.2"
 }
