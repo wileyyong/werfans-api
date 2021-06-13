@@ -109,7 +109,8 @@
     "name": "werfans-api",
     "private": true,
     "scripts": {
-        "start": "cross-env NODE_ENV=develop node runner.js server"
+        "build-swagger": "swagger-jsdoc -d swagger.json ./app/**/*.{js,ts} -o swagger.yml",
+        "start:local": "yarn build-swagger && cross-env NODE_ENV=develop node runner.js server"
     },
     "version": "2.1.2"
 }
