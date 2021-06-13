@@ -269,10 +269,10 @@ const {
  */
 
 class GoalController extends BaseController<
-GoalDocument,
-Record<string, any>,
-GoalResource
-> {
+  GoalDocument,
+  Record<string, any>,
+  GoalResource
+  > {
   constructor(options = {}) {
     Object.assign(options, {
       dataSource: {
@@ -361,20 +361,22 @@ GoalResource
 
     if (scope.isInsert() || isTargetAmountChanged) {
       const liveStream = await LiveStream.findOne({ _id: goal.liveStream }).lean();
-      const recipients = await User.getSubscribersOf(liveStream.owner);
+      if (liveStream) {
+        const recipients = await User.getSubscribersOf(liveStream.owner);
 
-      const notificationBody = scope.isInsert() ? 'Goal added' : 'Goal changed';
+        const notificationBody = scope.isInsert() ? 'Goal added' : 'Goal changed';
 
-      await app.notificationService.createNotification<{ liveStream: string }>({
-        notificationType: NotificationType.LiveStreamGoalChanged,
-        body: notificationBody,
-        metadata: {
-          liveStream: liveStream._id,
-          // @ts-ignore
-          goal,
-        },
-        recipients,
-      });
+        await app.notificationService.createNotification<{ liveStream: string }>({
+          notificationType: NotificationType.LiveStreamGoalChanged,
+          body: notificationBody,
+          metadata: {
+            liveStream: liveStream._id,
+            // @ts-ignore
+            goal,
+          },
+          recipients,
+        });
+      }
     }
   }
 

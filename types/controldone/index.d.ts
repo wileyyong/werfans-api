@@ -114,7 +114,7 @@ declare module 'controldone' {
 
   type Options = {
     transports: Transport[];
-    log: LoggerInstance;
+    log: LoggerInstance | Console;
   };
 
   export default class Controldone {
@@ -126,6 +126,6 @@ declare module 'controldone' {
 
     constructor(options: Options);
 
-    addController(controller: typeof Controller): void;
+    addController(controller: typeof Controller, options : Options): void;
   }
 }

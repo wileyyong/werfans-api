@@ -27,7 +27,7 @@ export interface ChatDocument extends Document, ChatDomain {
 
 export interface ChatModel extends Model<ChatDocument> {
   createLiveStream(liveStreamId: string, ownerId: string): Promise<ChatDocument>;
-  countUnreadMessages(chats: ChatResource[], user: string | UserDocument): Promise<ChatResource[]>;
+  countUnreadMessages(chats: ChatDocument[], user: string | UserDocument): Promise<ChatDocument[]>;
   incMessageCounter(id: string, value: number): Promise<ChatDocument>;
   removeDependencies(id: string): Promise<void>;
 }

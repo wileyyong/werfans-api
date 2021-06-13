@@ -157,7 +157,7 @@ export default (mongoose: Mongoose) => {
 
   schema.statics.findFavoritePhotosForUser = async function findFavoritePhotosForUser(
     userId: string,
-  ): Promise<PhotoDocument[]> {
+  ) {
     const query = { favoritedUsers: { $in: [userId] } };
     const photos = await mongoose.model('Photo').find(query).lean();
 

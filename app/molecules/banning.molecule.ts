@@ -58,8 +58,8 @@ export default () => {
             state: { $ne: StrikeState.Revoked },
           });
           if (count < strikeThreshold) {
-            const { banningReasonType } = await User.findById(targetUser).select('banningReasonType').lean()!;
-            if (banningReasonType === BanningReasonType.ByStrikes) {
+            const user = await User.findById(targetUser).select('banningReasonType').lean()!;
+            if (user && user.banningReasonType === BanningReasonType.ByStrikes) {
               await User.unban(targetUser);
             }
           }

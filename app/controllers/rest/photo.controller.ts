@@ -501,6 +501,7 @@ PhotoResource
               const { params } = scope;
               const photo = await Photo.findOne({ _id: model._id }).lean();
 
+              if (photo)
               await User.updateOne(
                 { _id: photo.owner },
                 { $addToSet: { favoritedUsers: params.itemId } },

@@ -27,14 +27,14 @@ export default () => {
             },
           );
           if (goal) {
-            const balanceRecords = await BalanceRecord
+            const balanceRecords: BalanceRecordDocument[] = await BalanceRecord
               .find({
                 type: BalanceRecordType.SendTip,
                 processedAt: { $exists: true },
                 ref: goal!._id,
               })
               .lean();
-            await Promise.all(balanceRecords.map((balanceRecord: BalanceRecordDocument) => (
+            await Promise.all(balanceRecords.map((balanceRecord) => (
               app.paymentService.processRecord({
                 owner: balanceRecord.owner,
                 type: BalanceRecordType.Reverting,

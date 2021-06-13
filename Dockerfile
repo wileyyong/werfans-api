@@ -1,11 +1,15 @@
-FROM node:12.14.1
+FROM node:14.17.0
 
 #
 # Step #1: Setup system workdir
 #
-ENV HOME /werfans-api
-WORKDIR ${HOME}
-ADD . $HOME
+#ENV HOME /werfans-api
+RUN mkdir /app
+WORKDIR /app
+COPY package*.json ./
+RUN npm i 
+COPY . .
+ADD . /app
 
 #
 # Step #2: Configure .env
@@ -15,7 +19,7 @@ ARG NODE_ENV=develop
 # NOTE: Must change this on our devops side (e.g. gitlab kubernetes variables)
 ARG ENV_PASSWORD=develop
 # decrypt env
-RUN NODE_ENV=${NODE_ENV} ENV_PASSWORD=${ENV_PASSWORD} yarn env:decrypt && yarn install
+RUN NODE_ENV=${NODE_ENV} ENV_PASSWORD=${ENV_PASSWORD} && yarn install
 
 #
 # Step #3: build

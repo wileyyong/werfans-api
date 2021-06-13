@@ -307,6 +307,7 @@ export interface UserDocument extends Omit<UserDomain, 'subscribers'>, Document 
   isSubscribedTo(userId: string): boolean;
   authenticate(password: string): boolean;
   subscribers: Types.Array<Types.ObjectId>;
+  calcSubscriptionsCounters(userId: string):  Promise<{ activeSubscriptionsCounter: number; subscriptionsCounter: number; }>
 }
 
 export type UserResource = Omit<

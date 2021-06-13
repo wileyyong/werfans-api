@@ -40,18 +40,17 @@ function restdoneFn(
     Model,
     async afterBan(doc: Document, scope: Scope) {
       const freshDoc = await Model.findById(doc._id).lean();
-      const strike = await Strike.create(<Partial<StrikeDomain>>{
-        creator: scope.user!._id,
-        targetUser: freshDoc[targetUserFieldName],
-        type: freshDoc.banningReasonType,
-        description: freshDoc.banningReasonDescription,
-        ref: freshDoc._id,
-        refModel: Model.modelName,
-      });
-      app.moleculerBroker.emit(events.strikes.created, <StrikeCreated>{
-        _id: strike.id,
-        targetUser: strike.targetUser,
-      });
+      if (freshDoc) {
+        const strike = await Strike.create(<Partial<StrikeDomain>>{
+          creator: scope.user!._id,
+          ref: freshDoc._id,
+          refModel: Model.modelName,
+        });
+        app.moleculerBroker.emit(events.strikes.created, <StrikeCreated>{
+          _id: strike.id,
+          targetUser: strike.targetUser,
+        });
+      }
     },
     exposeUnban: false,
     async getExtraBanValues(scope: Scope) {

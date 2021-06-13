@@ -76,61 +76,62 @@ const modelName = 'Goal';
 
 module.exports = (mongoose: Mongoose) => {
   const schema = new Schema({
-    liveStream: {
-      type: Schema.Types.ObjectId,
-      ref: 'LiveStream',
-    },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    title: String,
-    targetAmount: {
-      type: Number,
-      required: true,
-    },
-    currentAmount: {
-      type: Number,
-      default: 0,
-    },
-    completedAt: {
-      type: Date,
-      default: null,
-    },
-    state: {
-      type: String,
-      required: true,
-      enum: GoalStateValues,
-      default: GoalState.Active,
-    },
-  }, {
-    timestamps: true,
-  });
+  liveStream: {
+    type: Schema.Types.ObjectId,
+    ref: 'LiveStream',
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  title: String,
+  targetAmount: {
+    type: Number,
+    required: true,
+  },
+  currentAmount: {
+    type: Number,
+    default: 0,
+  },
+  completedAt: {
+    type: Date,
+    default: null,
+  },
+  state: {
+    type: String,
+    required: true,
+    enum: GoalStateValues,
+    default: GoalState.Active,
+  },
+}, {
+  timestamps: true,
+});
 
-  schema.methods.changeState = function changeState(newState: GoalState) {
-    const { state: currentState } = this;
-    if (
-      (currentState === GoalState.Active && newState === GoalState.Cancelled)
-      || (currentState === GoalState.Active && newState === GoalState.Reached)
-    ) {
-      this.state = newState;
-      return true;
-    } else {
-      return false;
+schema.methods.changeState = function changeState(newState: GoalState) {
+  const goal = <GoalDocument>this;
+  const { state: currentState } = goal;
+  if (
+    (currentState === GoalState.Active && newState === GoalState.Cancelled)
+    || (currentState === GoalState.Active && newState === GoalState.Reached)
+  ) {
+    goal.state = newState;
+    return true;
+  } else {
+    return false;
+  }
+};
+
+schema.methods.updateState = async function updateState(goalId: string, state: GoalState) {
+  const goal = <GoalDocument>this;
+  if (goal.changeState(state)) {
+    if (state === GoalState.Reached) {
+      goal.completedAt = new Date();
     }
-  };
+    return goal;
+  } else {
+    throw HTTP_STATUSES.FORBIDDEN.createError();
+  }
+};
 
-  schema.methods.updateState = async function updateState(goalId: string, state: string) {
-    const goal = this;
-    if (goal.changeState(state)) {
-      if (state === GoalState.Reached) {
-        goal.completedAt = Date.now();
-      }
-      return goal;
-    } else {
-      throw HTTP_STATUSES.FORBIDDEN.createError();
-    }
-  };
-
-  return mongoose.model<GoalDocument>(modelName, schema);
+return mongoose.model<GoalDocument>(modelName, schema);
 };

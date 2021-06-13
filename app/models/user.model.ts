@@ -679,7 +679,8 @@ export default (mongoose: Mongoose) => {
   });
 
   schema.methods.isAdmin = function isAdmin() {
-    return this.admin;
+    const user = <UserDocument>this
+    return user.admin;
   };
 
   schema.statics.populateSubscriptions = async function populateSubscriptions(
@@ -728,7 +729,9 @@ export default (mongoose: Mongoose) => {
     if (!ref) {
       return false;
     }
-    const { purchases } = this;
+    const user = <UserDocument>this
+ 
+    const { purchases } = user;
     if (purchases === undefined) {
       throw new IllegalStateError();
     }
@@ -741,7 +744,9 @@ export default (mongoose: Mongoose) => {
     if (idEqual(this._id, userId)) {
       return true;
     }
-    const { subscriptions } = this;
+    const user = <UserDocument>this
+ 
+    const { subscriptions } = user;
     if (subscriptions === undefined) {
       throw new IllegalStateError();
     }
@@ -803,14 +808,12 @@ export default (mongoose: Mongoose) => {
 
   schema.statics.syncSubscriptionsCounters = async function syncSubscriptionsCounters(
     userId: string,
-  ): Promise<{
-      activeSubscriptionsCounter: number;
-      subscriptionsCounter: number;
-    }> {
+  ) : Promise<{ activeSubscriptionsCounter: number; subscriptionsCounter: number; }> {
+    const user = <UserDocument><unknown>this;
     const {
       activeSubscriptionsCounter,
       subscriptionsCounter,
-    } = await this.calcSubscriptionsCounters(userId);
+    } = await user.calcSubscriptionsCounters(userId);
     await this.updateOne({ _id: userId }, { activeSubscriptionsCounter, subscriptionsCounter });
     return { activeSubscriptionsCounter, subscriptionsCounter };
   };
@@ -862,7 +865,7 @@ export default (mongoose: Mongoose) => {
     mongoose,
   });
 
-  schema.plugin<AuthMongooseOptions>(authPlugin.mongoose, {
+  schema.plugin(authPlugin.mongoose, {
     mongoose,
     // @ts-ignore
     fields: {

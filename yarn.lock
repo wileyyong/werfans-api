@@ -2571,6 +2571,15 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+genome-app@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/genome-app/-/genome-app-0.0.8.tgz#65bb6897a5c95897c82785996dadf4bf46755df6"
+  integrity sha512-qWcB7h37kHvcfqroa6b7raZAMXfm4hjXtI1B0WbQfIbS8z/MT8hHMkrJk45m5aVey+pQDzoKcJaSKECSWAx1Yg==
+  dependencies:
+    bluebird "^3.7.2"
+    glob "^7.1.6"
+    lodash "^4.17.15"
+
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"

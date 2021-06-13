@@ -76,6 +76,7 @@ const urlValidator = validate({
  */
 
 export default (mongoose: Mongoose) => {
+
   const schema = new Schema({
     name: {
       type: String,
@@ -115,7 +116,7 @@ export default (mongoose: Mongoose) => {
 
   schema.statics.findFavoriteAlbumsForUser = async function findFavoriteAlbumsForUser(
     userId: string,
-  ): Promise<AlbumDocument[]> {
+  ) {
     const query = { favoritedUsers: { $in: [userId] } };
     const albums = await mongoose.model('Album').find(query).lean();
 
@@ -124,11 +125,11 @@ export default (mongoose: Mongoose) => {
 
   schema.statics.incPhotoCounter = async function incPhotoCounter(
     id: string, value: number,
-  ): Promise<AlbumDocument> {
+  ) {
     return this
       .updateOne(
         { _id: id },
-        { $inc: { photosCounter: value } },
+        <object>{ $inc: { photosCounter: value } },
       );
   };
 

@@ -73,13 +73,13 @@ export default () => {
         );
         if (result.nModified > 0) {
           await BalanceRecord.markProcessed(balanceRecordId);
-          const { ref: contentData } = await BalanceRecord
+          const br = await BalanceRecord
             .findById(balanceRecordId)
             .select('ref refModel')
             .populate('ref')
             .lean()!;
           await app.paymentService.processRecord({
-            owner: contentData.owner,
+            owner: (br) ? br.owner : '',
             type: BalanceRecordType.GoalReached,
             ref,
             refModel,
