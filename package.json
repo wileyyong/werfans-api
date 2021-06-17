@@ -109,8 +109,32 @@
     "name": "werfans-api",
     "private": true,
     "scripts": {
+        "build": "yarn build-env && yarn build-spec && yarn build-swagger",
+        "build-description": "echo 'info: please do not run \"npm run build\". run its parent, such as \"build:develop\" instead.",
+        "build-env": "yarn env:decrypt",
+        "build-spec": "bash ./bin/generate_build_spec.sh",
         "build-swagger": "swagger-jsdoc -d swagger.json ./app/**/*.{js,ts} -o swagger.yml",
-        "start:local": "yarn build-swagger && cross-env NODE_ENV=develop node runner.js server"
+        "build:develop": "cross-env NODE_ENV=develop yarn build",
+        "build:master": "cross-env NODE_ENV=master yarn build",
+        "build:production": "cross-env NODE_ENV=production yarn build",
+        "build:staging": "cross-env NODE_ENV=staging yarn build",
+        "bump-version": "yarn version --new-version",
+        "ci": "yarn lint && yarn test",
+        "env:decrypt": "PATH_TO_CONFIG=$PWD ./bin/decrypt_env.sh",
+        "env:encrypt": "PATH_TO_CONFIG=$PWD ./bin/encrypt_env.sh",
+        "heroku-postbuild": "yarn build-spec && yarn build-swagger && yarn migrate",
+        "lint": "eslint \"**/*.{js,ts}\" --color",
+        "migrate": "cross-env TS_NODE_TRANSPILE_ONLY=1 node runner.js migrate-db",
+        "migrate-test": "cross-env NODE_ENV=test yarn migrate",
+        "start": "node runner.js server",
+        "start:develop": "cross-env NODE_ENV=develop yarn start",
+        "start:local": "cross-env NODE_ENV=local nodemon runner.js server --watch app",
+        "start:master": "cross-env NODE_ENV=master yarn start",
+        "start:production": "cross-env NODE_ENV=production yarn start",
+        "start:staging": "cross-env NODE_ENV=staging yarn start",
+        "test": "yarn test:set-env mocha",
+        "test:coverage": "yarn test:set-env nyc mocha",
+        "test:set-env": "yarn migrate-test && cross-env NODE_ENV=test LOGGER_SUPPRESS_STDOUT=true LOGGER_LEVEL=fatal"
     },
     "version": "2.1.2"
 }
