@@ -1,6 +1,40 @@
 version: '3'
 
 services:
+  mongodb:
+    image: mongo:4.2.2-bionic
+    networks:
+      - backend
+    environment:
+      - MONGO_DATA_DIR=/data/db
+    volumes:
+      - mongodb:/data/db/
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+
+
+  redis:
+    image: redis:5.0-alpine
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data/
+    command: ["redis-server"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100MB"
+        max-file: "3"
+
+
   app:
     image: app
     networks:
@@ -11,8 +45,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    depends_on:
+      - mongodb
+      - redis
+    links:
+      - mongodb
+      - redis
     volumes:
-      - .:/app
+      - ./app:/home/node/werfans-api
+      - yarn:/home/node/.cache/yarn
+    working_dir: /home/node/werfans-api
     tty: true
     logging:
       driver: "json-file"
@@ -22,3 +64,8 @@ services:
 
 networks:
   backend:
+
+volumes:
+  mongodb:
+  redis:
+  yarn:
