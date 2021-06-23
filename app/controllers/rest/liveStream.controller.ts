@@ -657,6 +657,7 @@ LiveStreamResource
               const { params } = scope;
               const liveStream = await LiveStream.findOne({ _id: model._id }).lean();
 
+              if (liveStream)
               await User.updateOne(
                 { _id: liveStream.owner },
                 { $addToSet: { favoritedUsers: params.itemId } },

@@ -143,12 +143,15 @@ function mongooseFn(schema: Schema, options: MongooseOptions) {
       ...fields.resetPassword,
     },
   });
-  schema.statics.logout = function logout(userId: string | Schema.Types.ObjectId) {
+  schema.statics.logout = function logout(userId: string ) {
     return app.modelProvider.RefreshToken.deleteMany({ user: userId });
   };
 
   schema.methods.authenticate = async function authenticate(password: string) {
-    return bcrypt.compare(password, this.hashedPassword);
+    const user = <UserDocument>this;
+    if (user.hashedPassword)
+      return bcrypt.compare(password, user.hashedPassword);
+    else return false;
   };
   schema.statics.hashPassword = async function hashPassword(password: string) {
     return bcrypt.hash(password, SALT_ROUNDS);

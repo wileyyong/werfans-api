@@ -84,7 +84,7 @@ export interface App {
   ccBillService: ICcBill.IService;
   config: Config;
   consts: Consts;
-  createLog: (module: NodeModule) => LoggerInstance | Console;
+  createLog: (module: NodeModule) =>  Console;
   emails: EmailBuilder<any>[],
   emailService: IEmailService,
   expressApp: Application;

@@ -38,7 +38,7 @@ fi
 PATH_TO_ENCRYPTED=.env.${NODE_ENV}.encrypted
 PATH_TO_DECRYPTED=.env.${NODE_ENV}.decrypted
 
-openssl enc -d -aes-256-cbc \
+openssl enc -aes-256-cbc -pass pass:${ENV_PASSWORD} -p \
   -in "${PATH_TO_CONFIG}/${PATH_TO_ENCRYPTED}" \
   -out "${PATH_TO_CONFIG}/${PATH_TO_DECRYPTED}" \
   -a -salt -k ${ENV_PASSWORD}

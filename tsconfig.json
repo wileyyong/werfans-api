@@ -10,6 +10,7 @@
     "strict": true,
     "sourceMap": true,
     "target": "es6",
+    "outDir": "dist",
     "typeRoots": [
       "types",
       "node_modules/@types"

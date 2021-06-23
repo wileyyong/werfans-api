@@ -31,6 +31,6 @@ process.on('unhandledRejection', (reason, p) => {
 });
 
 /* eslint-enable no-console */
-
+console.log(process.argv)
 // eslint-disable-next-line import/no-dynamic-require, global-require
 Promise.resolve(require(process.argv[2])());

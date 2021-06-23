@@ -141,12 +141,13 @@ module.exports = (mongoose: Mongoose) => {
   });
 
   schema.methods.changeState = function changeState(newState: StrikeState) {
-    const { state: currentState } = this;
+    const strike = <StrikeDocument>this;
+    const { state: currentState } = strike;
     if (
       (currentState === StrikeState.Created && newState === StrikeState.Confirmed)
       || (currentState === StrikeState.Created && newState === StrikeState.Revoked)
     ) {
-      this.state = newState;
+      strike.state = newState;
       return true;
     } else {
       return false;

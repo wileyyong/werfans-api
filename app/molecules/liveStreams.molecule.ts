@@ -30,14 +30,14 @@ export default () => {
               scheduledStartingAt: { $lte: currentDate },
               startingProcessedAt: { $exists: false },
             },
-            {
-              startingProcessedAt: currentDate,
+            <object>{
+              startingProcessedAt: new Date(currentDate).getTime(),
             },
           );
 
         // fetch just updated
         const liveStreamList: LiveStreamDocument[] = await LiveStream
-          .find({ startingProcessedAt: currentDate })
+          .find({ startingProcessedAt: new Date(currentDate).getTime() })
           .select('_id owner')
           .lean();
 

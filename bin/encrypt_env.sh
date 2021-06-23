@@ -4,7 +4,7 @@
 # dotenv file
 
 PATH_TO_CONFIG=$1
-
+ENV_PASSWORD='test'
 # check with prerequsites
 if [ -z "${NODE_ENV}" ]; then
   echo 'info: NODE_ENV is not set. To skip this prompt, execute your script with NODE_ENV'

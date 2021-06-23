@@ -349,10 +349,10 @@ const {
  */
 
 class AlbumController extends BaseController<
-AlbumDocument,
-Record<string, any>,
-AlbumResource
-> {
+  AlbumDocument,
+  Record<string, any>,
+  AlbumResource
+  > {
   constructor(options = {}) {
     Object.assign(options, {
       dataSource: {
@@ -539,10 +539,12 @@ AlbumResource
               const { params } = scope;
               const album = await Album.findOne({ _id: model._id }).lean();
 
-              await User.updateOne(
-                { _id: album.owner },
-                { $addToSet: { favoritedUsers: params.itemId } },
-              );
+              if (album) {
+                await User.updateOne(
+                  { _id: album.owner },
+                  { $addToSet: { favoritedUsers: params.itemId } },
+                );
+              }
             },
           },
         },

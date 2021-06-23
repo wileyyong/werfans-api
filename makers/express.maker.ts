@@ -7,5 +7,5 @@ export default (app: App) => {
   const expressApp: ExtendedExpressApplication = <ExtendedExpressApplication><any>express();
   expressApp.enable('trust proxy');
   app.middlewares.forEach((middleware) => middleware(expressApp, app));
-  app.registerProvider('expressApp', expressApp);
+  app.registerProvider('expressApp', () => expressApp);
 };

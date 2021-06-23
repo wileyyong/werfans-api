@@ -6,7 +6,7 @@ const appTitle = process.env.APP_TITLE || 'LS';
 
 const config = {
   port: toNumber(process.env.PORT, 1340),
-  mongo: process.env.MONGO_URI || 'mongodb://localhost/werfans-api',
+  mongo: process.env.MONGO_URI || 'mongodb+srv://mlm-social:vFx48HoLEqPkD1vX@cluster0.sytbq.mongodb.net/werfans-api',
   mongoOptions: {
     poolSize: toNumber(process.env.MONGO_POOL_SIZE, 5),
     connectTimeoutMS: toNumber(process.env.MONGO_CONNECT_TIMEOUT, 30000),

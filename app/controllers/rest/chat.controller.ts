@@ -295,16 +295,16 @@ ChatResource
     return super.buildConditions(scope);
   }
 
-  async post(chat: ChatResource, scope: Scope<ChatResource>) {
-    if (scope.isSelectOne()) {
-      await Chat.countUnreadMessages([chat], scope.user!);
-    }
-    return chat;
-  }
+  // async post(chat: ChatDocument, scope: Scope<ChatResource>) {
+  //   if (scope.isSelectOne()) {
+  //     await Chat.countUnreadMessages([chat], scope.user!);
+  //   }
+  //   return chat;
+  // }
 
-  collectionPost(collection: ChatDocument[], scope: Scope<ChatDocument>) {
-    return Chat.countUnreadMessages(collection, scope.user!);
-  }
+  // collectionPost(collection: ChatDocument[], scope: Scope<ChatDocument>) {
+  //   return Chat.countUnreadMessages(collection, scope.user!);
+  // }
 
   async openChat(scope: Scope) {
     await this._handlePre(scope);

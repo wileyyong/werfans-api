@@ -180,14 +180,15 @@ export default (mongoose: Mongoose) => {
   });
 
   schema.methods.changeState = function changeState(newState: LiveStreamState) {
-    const { state: currentState } = this;
+    const liveStream = <LiveStreamDocument>this
+    const { state: currentState } = liveStream;
     if (
       (currentState === LiveStreamState.Created && newState === LiveStreamState.Scheduled)
       || (currentState === LiveStreamState.Created && newState === LiveStreamState.OnAir)
       || (currentState === LiveStreamState.Scheduled && newState === LiveStreamState.OnAir)
       || (currentState === LiveStreamState.OnAir && newState === LiveStreamState.Completed)
     ) {
-      this.state = newState;
+      liveStream.state = newState;
       return true;
     } else {
       return false;
@@ -216,7 +217,7 @@ export default (mongoose: Mongoose) => {
 
   schema.statics.findFavoriteLiveStreamsForUser = async function findFavoriteLiveStreamsForUser(
     userId: string,
-  ): Promise<LiveStreamDocument[]> {
+  ) {
     const query = { favoritedUsers: { $in: [userId] } };
     const liveStreams = await mongoose.model('LiveStream').find(query).lean();
 
